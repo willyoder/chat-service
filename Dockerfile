@@ -1,7 +1,7 @@
 # Use the official .NET 7.0 SDK image to build the application
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
-# Set a custom working directory in the container
+# Set the working directory in the container
 WORKDIR /BlazorServerCorr
 
 # Copy the .csproj file and restore any dependencies
@@ -17,15 +17,15 @@ RUN dotnet publish -c Release -o out
 # Use the official .NET 7.0 runtime image for the final stage
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 
-# Set the custom working directory in the final container
+# Set the working directory in the final container
 WORKDIR /BlazorServerCorr
 
 # Copy the built application from the build stage
-COPY --from=build /BlazorServerCorr .
+COPY --from=build /BlazorServerCorr/out .
 
 # Expose ports (HTTP and/or HTTPS)
 EXPOSE 80
-EXPOSE 443  # Uncomment if using HTTPS
+EXPOSE 443
 
 # Set environment variables (if needed)
 ENV ASPNETCORE_ENVIRONMENT=Production
